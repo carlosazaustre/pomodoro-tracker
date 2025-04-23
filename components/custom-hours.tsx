@@ -1,31 +1,36 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
+import type React from "react";
+import { useState } from "react";
 
 interface CustomHoursProps {
-  onSave: (hours: number) => void
-  onCancel: () => void
+  onSave: (hours: number) => void;
+  onCancel: () => void;
 }
 
-export const CustomHours: React.FC<CustomHoursProps> = ({ onSave, onCancel }) => {
-  const [hours, setHours] = useState<number>(4)
+export const CustomHours: React.FC<CustomHoursProps> = ({
+  onSave,
+  onCancel,
+}) => {
+  const [hours, setHours] = useState<number>(4);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number.parseInt(e.target.value, 10)
+    const value = Number.parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0) {
-      setHours(value)
+      setHours(value);
     }
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave(hours)
-  }
+    e.preventDefault();
+    onSave(hours);
+  };
 
   return (
     <div className="custom-hours bg-white p-6 rounded-lg shadow-md">
-      <h2 className="custom-hours__title text-xl font-bold mb-4">Custom Work Hours</h2>
+      <h2 className="custom-hours__title text-xl font-bold mb-4">
+        Custom Work Hours
+      </h2>
 
       <form onSubmit={handleSubmit} className="custom-hours__form">
         <div className="mb-6">
@@ -44,14 +49,21 @@ export const CustomHours: React.FC<CustomHoursProps> = ({ onSave, onCancel }) =>
         </div>
 
         <div className="custom-hours__actions flex justify-end gap-2">
-          <button type="button" onClick={onCancel} className="px-4 py-2 border rounded-md hover:bg-gray-100">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 border rounded-md hover:bg-gray-100"
+          >
             Cancel
           </button>
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700"
+          >
             Continue
           </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};

@@ -1,45 +1,61 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { usePomodoroContext, PLAN_OPTIONS } from "@/context/PomodoroContext"
-import { TimerButton } from "./timer-button"
-import { SoundToggle } from "./sound-toggle"
-import { SessionSummary } from "./session-summary"
+import type React from "react";
+import { usePomodoroContext, PLAN_OPTIONS } from "@/context/PomodoroContext";
+import { TimerButton } from "./timer-button";
+import { SoundToggle } from "./sound-toggle";
+import { SessionSummary } from "./session-summary";
 
 export const PomodoroTimer: React.FC = () => {
-  const { session, startBlock, pauseBlock, resumeBlock, completeBlock, resetSession } = usePomodoroContext()
+  const {
+    session,
+    startBlock,
+    pauseBlock,
+    resumeBlock,
+    completeBlock,
+    resetSession,
+  } = usePomodoroContext();
 
-  if (!session) return null
+  if (!session) return null;
 
   // If session is completed and has start/end times, show summary
-  if (session.isCompleted && session.sessionStartTime && session.sessionEndTime) {
-    return <SessionSummary session={session} onReset={resetSession} />
+  if (
+    session.isCompleted &&
+    session.sessionStartTime &&
+    session.sessionEndTime
+  ) {
+    return <SessionSummary session={session} onReset={resetSession} />;
   }
 
   // Get plan information
-  let planLabel = ""
-  let planHours = 0
+  let planLabel = "";
+  let planHours = 0;
 
   if (session.plan === "custom" && session.customHours) {
-    planLabel = "Custom"
-    planHours = session.customHours
+    planLabel = "Custom";
+    planHours = session.customHours;
   } else {
-    const planOption = PLAN_OPTIONS.find((option) => option.id === session.plan)
+    const planOption = PLAN_OPTIONS.find(
+      (option) => option.id === session.plan
+    );
     if (planOption) {
-      planLabel = planOption.label
-      planHours = planOption.hours
+      planLabel = planOption.label;
+      planHours = planOption.hours;
     }
   }
 
-  const currentBlock = session.blocks[session.currentBlockIndex]
+  const currentBlock = session.blocks[session.currentBlockIndex];
 
   // Calculate progress
-  const completedBlocks = session.blocks.filter((block) => block.status === "completed").length
-  const totalBlocks = session.blocks.length
-  const progress = (completedBlocks / totalBlocks) * 100
+  const completedBlocks = session.blocks.filter(
+    (block) => block.status === "completed"
+  ).length;
+  const totalBlocks = session.blocks.length;
+  const progress = (completedBlocks / totalBlocks) * 100;
 
   // Get settings
-  const { workDuration, shortBreakDuration, longBreakDuration } = session.settings
+  const { workDuration, shortBreakDuration, longBreakDuration } =
+    session.settings;
 
   return (
     <div className="pomodoro-timer">
@@ -52,12 +68,16 @@ export const PomodoroTimer: React.FC = () => {
         </div>
 
         <div className="pomodoro-timer__settings text-sm text-gray-600 mb-2">
-          <span>Focus: {workDuration}min</span> | <span>Short Break: {shortBreakDuration}min</span> |{" "}
+          <span>Focus: {workDuration}min</span> |{" "}
+          <span>Short Break: {shortBreakDuration}min</span> |{" "}
           <span>Long Break: {longBreakDuration}min</span>
         </div>
 
         <div className="pomodoro-timer__progress-bar w-full h-2 bg-gray-200 rounded-full mb-2">
-          <div className="h-full bg-blue-500 rounded-full" style={{ width: `${progress}%` }} />
+          <div
+            className="h-full bg-orange-600 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
         </div>
 
         <div className="pomodoro-timer__stats flex justify-between text-sm text-gray-600">
@@ -67,7 +87,9 @@ export const PomodoroTimer: React.FC = () => {
           <span>
             {session.isCompleted
               ? "Session completed!"
-              : `Current: ${currentBlock.type === "work" ? "Working" : "Break"}`}
+              : `Current: ${
+                  currentBlock.type === "work" ? "Working" : "Break"
+                }`}
           </span>
         </div>
       </div>
@@ -77,7 +99,9 @@ export const PomodoroTimer: React.FC = () => {
           <TimerButton
             key={block.id}
             block={block}
-            isActive={index === session.currentBlockIndex && !session.isCompleted}
+            isActive={
+              index === session.currentBlockIndex && !session.isCompleted
+            }
             onStart={startBlock}
             onPause={pauseBlock}
             onResume={resumeBlock}
@@ -95,5 +119,5 @@ export const PomodoroTimer: React.FC = () => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
